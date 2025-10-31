@@ -1,0 +1,3 @@
+/home/adrian/documents/programming/pong/build/ninja/CMakeFiles/pong.dir
+/home/adrian/documents/programming/pong/build/ninja/CMakeFiles/edit_cache.dir
+/home/adrian/documents/programming/pong/build/ninja/CMakeFiles/rebuild_cache.dir
