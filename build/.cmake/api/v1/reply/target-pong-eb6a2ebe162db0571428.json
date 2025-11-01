@@ -33,7 +33,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 26,
+				"line" : 27,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 29,
 				"parent" : 0
 			},
 			{
@@ -45,7 +51,7 @@
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 22,
+				"line" : 21,
 				"parent" : 0
 			}
 		]
@@ -59,22 +65,22 @@
 					"fragment" : "-std=c++20"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"fragment" : "-Wall"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"fragment" : "-Wextra"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"fragment" : "-Wpedantic"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 5,
 					"path" : "/home/adrian/documents/programming/pong/include"
 				},
 				{
@@ -115,7 +121,7 @@
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/usr/lib/x86_64-linux-gnu/libSDL2main.a",
 				"role" : "libraries"
 			}

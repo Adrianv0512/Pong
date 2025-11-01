@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(pong LANGUAGES CXX)
 
-# Defaults: C++20, warnings on
+# ---- Language / warnings ----
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -12,22 +12,48 @@ else()
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Source files
+# ---- Sources ----
 add_executable(pong
   src/main.cpp
   src/sdlApp.cpp
   src/pong.cpp
 )
-
 target_include_directories(pong PRIVATE include)
 
-# Find SDL2 installed from apt (libsdl2-dev)
-find_package(SDL2 REQUIRED)                    # fails fast if not found
-target_link_libraries(pong PRIVATE SDL2::SDL2 SDL2::SDL2main)
-# include dirs come from the imported targets, so no manual include paths needed
+set(_sdl2_found_targets OFF)
+find_package(SDL2 QUIET CONFIG)   
+if (SDL2_FOUND AND TARGET SDL2::SDL2)
+  set(_sdl2_found_targets ON)
+  target_link_libraries(pong PRIVATE SDL2::SDL2)
+  if (TARGET SDL2::SDL2main)
+    target_link_libraries(pong PRIVATE SDL2::SDL2main)
+  endif()
+endif()
 
-# --- If you’ll use raylib later, uncomment these lines ---
-# find_package(raylib QUIET) # works if libraylib-dev is installed
+if (NOT _sdl2_found_targets)
+  # Try module mode (older CMake/OS packagers); may expose legacy vars.
+  find_package(SDL2 REQUIRED)            # Module mode
+  if (TARGET SDL2::SDL2)
+    target_link_libraries(pong PRIVATE SDL2::SDL2)
+    if (TARGET SDL2::SDL2main)
+      target_link_libraries(pong PRIVATE SDL2::SDL2main)
+    endif()
+  else()
+    # Legacy variables path (older FindSDL2)
+    # SDL2_INCLUDE_DIRS, SDL2_LIBRARIES are expected.
+    target_include_directories(pong PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(pong PRIVATE ${SDL2_LIBRARIES})
+  endif()
+endif()
+
+# On Windows/MSVC, if you don’t want to link SDL2main, define SDL_MAIN_HANDLED
+# and provide your own 'int main(...)'. Uncomment if you choose that route:
+# if (WIN32)
+#   target_compile_definitions(pong PRIVATE SDL_MAIN_HANDLED)
+# endif()
+
+# If you later add raylib, keep it optional and harmless when missing:
+# find_package(raylib QUIET)
 # if (raylib_FOUND)
 #   target_link_libraries(pong PRIVATE raylib)
 #   target_compile_definitions(pong PRIVATE USE_RAYLIB)
